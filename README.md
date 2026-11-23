@@ -4,7 +4,7 @@ Compilado dos slides, notebooks e atividades desta pasta. Reúne fórmulas, crit
 
 ## Escopo da disciplina
 
-O slide introdutório apresenta a disciplina **Métodos Matemáticos para Análise de Dados (XMAC02)**, com fundamentos estatísticos e probabilísticos, ferramentas computacionais em Python e tópicos de álgebra linear. A ementa cita estatística descritiva, probabilidade, análise combinatória, variáveis aleatórias, distribuições, amostragem, testes de hipótese e álgebra linear (sistemas lineares, eliminação gaussiana e regressão polinomial). Os materiais localizados desenvolvem principalmente Python, estatística e probabilidade; não foram encontrados notebooks específicos de álgebra linear.
+O slide introdutório apresenta a disciplina **Métodos Matemáticos para Análise de Dados (XMAC02)**, com fundamentos estatísticos e probabilísticos, ferramentas computacionais em Python e tópicos de álgebra linear. A ementa cita estatística descritiva, probabilidade, análise combinatória, variáveis aleatórias, distribuições, amostragem, testes de hipótese e álgebra linear (sistemas lineares, eliminação gaussiana e regressão polinomial). Os materiais localizados incluem aulas práticas de Python e estatística, além das aulas 24–26 sobre vetores, matrizes e sistemas lineares.
 
 O slide também registra avaliações e datas de um período letivo específico. Como o calendário pode estar desatualizado, consulte o professor para informações atuais.
 
@@ -13,6 +13,7 @@ O slide também registra avaliações e datas de um período letivo específico.
 | Se a questão pede... | Consulte |
 |---|---|
 | Média, mediana, moda, dispersão ou boxplot | [Estatística descritiva](#1-estatística-descritiva) |
+| Vetores, matrizes, determinante ou matriz inversa | [Álgebra linear](#8-álgebra-linear) |
 | Chance de eventos, contagem de combinações | [Probabilidade e combinatória](#2-probabilidade-e-combinatória) |
 | Número de sucessos em n tentativas | [Binomial](#3-distribuições-de-probabilidade) |
 | Número de ocorrências em um intervalo | [Poisson](#3-distribuições-de-probabilidade) |
@@ -351,7 +352,81 @@ stats.tukey_hsd(grupo1, grupo2, grupo3)  # pós-teste quando adequado
 
 ---
 
-## 8. Python para análise de dados
+## 8. Álgebra linear
+
+### Vetores
+
+Vetores representam grandezas com magnitude e direção. Em NumPy, um vetor é normalmente um array unidimensional.
+
+```python
+import numpy as np
+
+u = np.array([2, -1, 3])
+v = np.array([1, 4, -2])
+
+u + v             # soma componente a componente
+2 * u             # multiplicação por escalar
+np.dot(u, v)      # produto interno
+np.linalg.norm(u) # norma euclidiana
+```
+
+O produto interno mede a combinação entre duas coordenadas. Vetores são ortogonais quando o produto interno é zero.
+
+### Matrizes
+
+Uma matriz organiza números em linhas e colunas. Em NumPy, `A.shape` informa `(linhas, colunas)`, `A @ B` calcula a multiplicação matricial e `A.T` calcula a transposta.
+
+```python
+A = np.array([[1, 2],
+              [3, 4]])
+B = np.array([[5, 6],
+              [7, 8]])
+
+A.shape
+A + B
+A @ B
+A.T
+```
+
+### Determinante e inversa
+
+O determinante indica propriedades da matriz:
+
+- `det(A) = 0`: a matriz é singular e não possui inversa; o sistema associado pode não ter solução única.
+- `det(A) != 0`: a matriz possui inversa e o sistema associado pode ter solução única.
+
+```python
+detA = np.linalg.det(A)
+invA = np.linalg.inv(A)
+A @ invA  # aproxima a matriz identidade
+```
+
+Evite confiar na igualdade exata ao verificar uma inversa; use `np.allclose(A @ invA, np.eye(A.shape[0]))`.
+
+### Sistemas lineares
+
+Um sistema linear no formato `A x = b` pode ser resolvido com NumPy:
+
+```python
+A = np.array([[2, 1],
+              [1, 3]])
+b = np.array([5, 8])
+
+x = np.linalg.solve(A, b)
+# x contém os valores das incógnitas
+np.allclose(A @ x, b)
+```
+
+Classificação usual:
+
+- **Solução única:** o sistema possui uma única combinação das incógnitas.
+- **Infinitas soluções:** as equações representam restrições redundantes ou dependentes.
+- **Nenhuma solução:** as equações são incompatíveis.
+- **Eliminação gaussiana:** transforma a matriz aumentada até obter uma forma triangular ou escalonada para decidir o tipo de solução.
+
+---
+
+## 9. Python para análise de dados
 
 ### Preparação e estruturas
 
@@ -456,7 +531,7 @@ Pizza: use para poucas categorias que compõem um todo (`plt.pie(valores, labels
 
 ---
 
-## 9. Exemplos de fluxo de trabalho
+## 10. Exemplos de fluxo de trabalho
 
 ### Filtrar, resumir e plotar
 
@@ -489,9 +564,9 @@ Antes de concluir, verifique que os grupos são independentes, que a variável �
 
 ---
 
-## 10. Mapa do material original
+## 11. Mapa do material original
 
-O conteúdo cobre as aulas 00–23. Use os diretórios/notebooks originais para ver enunciados completos, células de código e exemplos visuais.
+O conteúdo cobre as aulas 00–26. Use os diretórios/notebooks originais para ver enunciados completos, células de código e exemplos visuais.
 
 | Aulas / material | Tópicos principais | Arquivos-base |
 |---|---|---|
@@ -505,6 +580,9 @@ O conteúdo cobre as aulas 00–23. Use os diretórios/notebooks originais para 
 | 09–11 | Gráficos; linhas; tabelas cruzadas e normalização | [Aula 09 - Plotagem de Graficos](<./Aula 09 - Plotagem de Graficos/>); [Aula 10 - Grafico de Linha](<./Aula 10 - Grafico de Linha/>); [Aula 11 - CrossTab](<./Aula 11 - CrossTab/>) |
 | 12–14 | Normal, exponencial, distribuição amostral e TCL | [Aula 12 - Distribuicao Normal](<./Aula 12 - Distribuicao Normal/>); [Aula 13 - Distribuicao Exponencial](<./Aula 13 - Distribuicao Exponencial/>); [Aula 14 - Teorema Central do Limite](<./Aula 14 - Teorema Central do Limite/>) |
 | 15–23 | Testes de hipótese, médias, proporções, variâncias e ANOVA | [Aula 15 - Teste de Hipótese](<./Aula 15 - Teste de Hipótese/>); [Aula 16 - Testes T e Z de Uma Amostra](<./Aula 16 - Testes T e Z de Uma Amostra/>); [Aula 17 - Teste de Uma Proporção](<./Aula 17 - Teste de Uma Proporção/>); [Aula 18 - Teste de Variância](<./Aula 18 - Teste de Variância/>); [Aula 19 - Testes t e Z de Duas Amostras](<./Aula 19 - Testes t e Z de Duas Amostras/>); [Aula 20 - Teste t Pareado](<./Aula 20 - Teste t Pareado/>); [Aula 21 - Teste de Duas Proporções](<./Aula 21 - Teste de Duas Proporções/>); [Aula 22 - Teste de Variâncias](<./Aula 22 - Teste de Variâncias/>); [Aula 23 - ANOVA](<./Aula 23 - ANOVA/>) |
+| 24 | Vetores, matrizes, determinante, matriz inversa e resolução de sistemas | [Aula 24 - Introdução a Algebra Linear](<./Aula 24 - Introdução a Algebra Linear/>); [Aula24.ipynb](<./Aula 24 - Introdução a Algebra Linear/Aula24.ipynb>) |
+| 25 | Equações lineares e representação matricial | [Aula 25 - Equações Lineares](<./Aula 25 - Equações Lineares/>); [Slides](<./Aula 25 - Equações Lineares/XMAC02_aula25 (1).pdf>) |
+| 26 | Resolução de sistemas lineares | [Aula 26 - Resolução de Sistemas Lineares](<./Aula 26 - Resolução de Sistemas Lineares/>); [Slides](<./Aula 26 - Resolução de Sistemas Lineares/XMAC02_aula26.pdf>) |
 | Atividades | Descritiva, visualização, filtragem, resumo, proporções e testes | [Atividade Avaliativa](<./Atividade Avaliativa/>); [Atividade em Sala 01](<./Atividade em Sala 01/>); [Atividade em Sala 02](<./Atividade em Sala 02/>) |
 
 ### Bases CSV incluídas
@@ -519,7 +597,7 @@ O conteúdo cobre as aulas 00–23. Use os diretórios/notebooks originais para 
 
 ---
 
-## 11. Observações para evitar erros
+## 12. Observações para evitar erros
 
 1. Confirme se a pergunta pede **exatamente**, **no máximo**, **pelo menos**, **menor que** ou **maior que**: isso determina `pmf`, `cdf`, `sf` e a inclusão do limite.
 2. Verifique unidades e escala de `λ` (eventos por minuto, hora etc.) e de `σ` (mesma unidade da variável).
